@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Updates - Competitor Monitor{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1><i class="bi bi-bell"></i> Competitor Updates</h1>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">Update Type</label>
+                <select name="type" class="form-select">
+                    <option value="">All Types</option>
+                    {% for type_code, type_name in update_types %}
+                    <option value="{{ type_code }}" {% if current_filters.type == type_code %}selected{% endif %}>
+                        {{ type_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Competitor</label>
+                <select name="competitor" class="form-select">
+                    <option value="">All Competitors</option>
+                    {% for comp in competitors %}
+                    <option value="{{ comp.pk }}" {% if current_filters.competitor == comp.pk|stringformat:"s" %}selected{% endif %}>
+                        {{ comp.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Impact</label>
+                <select name="high_impact" class="form-select">
+                    <option value="">All</option>
+                    <option value="true" {% if current_filters.high_impact == "true" %}selected{% endif %}>High Impact Only</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">&nbsp;</label>
+                <div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-funnel"></i> Filter
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Updates List -->
+<div class="card">
+    <div class="card-body">
+        {% if updates %}
+        <div class="list-group list-group-flush">
+            {% for update in updates %}
+            <div class="list-group-item border-0 px-0">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                        <h5 class="mb-2">
+                            <a href="{% url 'update_detail' update.pk %}" class="text-decoration-none">
+                                {{ update.title }}
+                            </a>
+                        </h5>
+                        <p class="text-muted mb-3">{{ update.content|truncatewords:50 }}</p>
+                        <div class="d-flex gap-2 flex-wrap align-items-center">
+                            <span class="badge update-type-{{ update.update_type }} badge-custom">
+                                {{ update.get_update_type_display }}
+                            </span>
+                            <span class="badge bg-secondary badge-custom">
+                                <i class="bi bi-building"></i> {{ update.competitor.name }}
+                            </span>
+                            {% if update.is_high_impact %}
+                            <span class="badge bg-danger badge-custom">
+                                <i class="bi bi-star-fill"></i> High Impact
+                            </span>
+                            {% endif %}
+                            <span class="badge {% if update.impact_score >= 70 %}impact-high{% elif update.impact_score >= 40 %}impact-medium{% else %}impact-low{% endif %}">
+                                Impact: {{ update.impact_score }}
+                            </span>
+                            <small class="text-muted">
+                                <i class="bi bi-clock"></i> {{ update.detected_at|date:"M d, Y H:i" }}
+                            </small>
+                            {% if update.url %}
+                            <a href="{{ update.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-box-arrow-up-right"></i> Source
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if not forloop.last %}<hr class="my-4">{% endif %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
+            <h4 class="mt-3 text-muted">No Updates Found</h4>
+            <p class="text-muted">Try adjusting your filters or run monitoring to collect updates.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+

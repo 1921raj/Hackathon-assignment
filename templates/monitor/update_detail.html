@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ update.title }} - Competitor Monitor{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <a href="{% url 'updates' %}" class="btn btn-outline-secondary mb-3">
+            <i class="bi bi-arrow-left"></i> Back to Updates
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-white">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h3 class="mb-2">{{ update.title }}</h3>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <span class="badge update-type-{{ update.update_type }} badge-custom">
+                                {{ update.get_update_type_display }}
+                            </span>
+                            <span class="badge bg-secondary badge-custom">
+                                <i class="bi bi-building"></i> {{ update.competitor.name }}
+                            </span>
+                            {% if update.is_high_impact %}
+                            <span class="badge bg-danger badge-custom">
+                                <i class="bi bi-star-fill"></i> High Impact
+                            </span>
+                            {% endif %}
+                            <span class="badge {% if update.impact_score >= 70 %}impact-high{% elif update.impact_score >= 40 %}impact-medium{% else %}impact-low{% endif %}">
+                                Impact Score: {{ update.impact_score }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h5>Content</h5>
+                    <p class="text-muted" style="white-space: pre-wrap;">{{ update.content }}</p>
+                </div>
+                
+                <hr>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Detected At:</strong> {{ update.detected_at|date:"F d, Y H:i" }}</p>
+                        {% if update.published_date %}
+                        <p><strong>Published Date:</strong> {{ update.published_date|date:"F d, Y" }}</p>
+                        {% endif %}
+                        <p><strong>Source:</strong> {{ update.source|title }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        {% if update.url %}
+                        <p><strong>Source URL:</strong></p>
+                        <a href="{{ update.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-box-arrow-up-right"></i> Visit Source
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        {% if related_trends %}
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Related Trends</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    {% for trend in related_trends %}
+                    <div class="list-group-item border-0 px-0">
+                        <h6 class="mb-1">{{ trend.name }}</h6>
+                        <p class="text-muted small mb-0">{{ trend.description|truncatewords:15 }}</p>
+                    </div>
+                    {% if not forloop.last %}<hr>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Competitor Info</h5>
+            </div>
+            <div class="card-body">
+                <h6>{{ update.competitor.name }}</h6>
+                <p class="text-muted small mb-2">
+                    <i class="bi bi-globe"></i> 
+                    <a href="{{ update.competitor.website }}" target="_blank" class="text-decoration-none">
+                        {{ update.competitor.website }}
+                    </a>
+                </p>
+                <a href="{% url 'competitor_detail' update.competitor.pk %}" class="btn btn-sm btn-outline-primary">
+                    View Competitor Profile <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

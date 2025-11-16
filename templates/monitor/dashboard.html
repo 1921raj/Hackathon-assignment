@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Competitor Monitor{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="mb-0"><i class="bi bi-speedometer2"></i> Dashboard</h1>
+            <form method="post" action="{% url 'run_monitoring' %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-play-circle"></i> Run Monitoring Now
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white-50 mb-1">Active Competitors</h6>
+                        <h2 class="mb-0">{{ total_competitors }}</h2>
+                    </div>
+                    <i class="bi bi-building" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card stat-card success">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white-50 mb-1">Total Updates</h6>
+                        <h2 class="mb-0">{{ total_updates }}</h2>
+                    </div>
+                    <i class="bi bi-bell" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card stat-card warning">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white-50 mb-1">High Impact</h6>
+                        <h2 class="mb-0">{{ high_impact_count }}</h2>
+                    </div>
+                    <i class="bi bi-exclamation-triangle" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card stat-card info">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-white-50 mb-1">This Week</h6>
+                        <h2 class="mb-0">{{ recent_week_updates }}</h2>
+                    </div>
+                    <i class="bi bi-calendar-week" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Recent Updates -->
+    <div class="col-lg-8 mb-4">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-clock-history"></i> Recent Updates</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_updates %}
+                <div class="list-group list-group-flush">
+                    {% for update in recent_updates %}
+                    <div class="list-group-item border-0 px-0">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">
+                                    <a href="{% url 'update_detail' update.pk %}" class="text-decoration-none">
+                                        {{ update.title|truncatewords:15 }}
+                                    </a>
+                                </h6>
+                                <p class="text-muted small mb-2">{{ update.content|truncatewords:20 }}</p>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <span class="badge update-type-{{ update.update_type }} badge-custom">
+                                        {{ update.get_update_type_display }}
+                                    </span>
+                                    <span class="badge bg-secondary badge-custom">
+                                        {{ update.competitor.name }}
+                                    </span>
+                                    {% if update.is_high_impact %}
+                                    <span class="badge bg-danger badge-custom">
+                                        <i class="bi bi-star-fill"></i> High Impact
+                                    </span>
+                                    {% endif %}
+                                    <small class="text-muted">
+                                        <i class="bi bi-clock"></i> {{ update.detected_at|timesince }} ago
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge {% if update.impact_score >= 70 %}impact-high{% elif update.impact_score >= 40 %}impact-medium{% else %}impact-low{% endif %}">
+                                    Impact: {{ update.impact_score }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% if not forloop.last %}<hr>{% endif %}
+                    {% endfor %}
+                </div>
+                <div class="mt-3">
+                    <a href="{% url 'updates' %}" class="btn btn-outline-primary btn-sm">
+                        View All Updates <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-4">
+                    <i class="bi bi-inbox" style="font-size: 3rem;"></i><br>
+                    No updates yet. Run monitoring to start tracking competitors.
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <!-- Updates by Type -->
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-pie-chart"></i> Updates by Type</h5>
+            </div>
+            <div class="card-body">
+                {% if updates_by_type %}
+                <div class="list-group list-group-flush">
+                    {% for item in updates_by_type %}
+                    <div class="list-group-item border-0 px-0 d-flex justify-content-between align-items-center">
+                        <span class="badge update-type-{{ item.update_type }} badge-custom">
+                            {{ item.update_type|title }}
+                        </span>
+                        <strong>{{ item.count }}</strong>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted text-center">No data available</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Recent Trends -->
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-graph-up"></i> Recent Trends</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_trends %}
+                <div class="list-group list-group-flush">
+                    {% for trend in recent_trends %}
+                    <div class="list-group-item border-0 px-0">
+                        <h6 class="mb-1">{{ trend.name }}</h6>
+                        <p class="text-muted small mb-2">{{ trend.description|truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">Frequency: {{ trend.frequency }}</small>
+                            <small class="text-muted">Confidence: {{ trend.confidence_score|floatformat:0 }}%</small>
+                        </div>
+                    </div>
+                    {% if not forloop.last %}<hr>{% endif %}
+                    {% endfor %}
+                </div>
+                <div class="mt-3">
+                    <a href="{% url 'trends' %}" class="btn btn-outline-primary btn-sm w-100">
+                        View All Trends <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                {% else %}
+                <p class="text-muted text-center py-3">No trends detected yet</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        {% if user.is_authenticated and unread_notifications %}
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-bell"></i> Recent Notifications</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    {% for notification in unread_notifications %}
+                    <div class="list-group-item border-0 px-0">
+                        <h6 class="mb-1">{{ notification.update.competitor.name }}</h6>
+                        <p class="text-muted small mb-0">{{ notification.message|truncatewords:10 }}</p>
+                        <small class="text-muted">{{ notification.created_at|timesince }} ago</small>
+                    </div>
+                    {% if not forloop.last %}<hr>{% endif %}
+                    {% endfor %}
+                </div>
+                <div class="mt-3">
+                    <a href="{% url 'notifications' %}" class="btn btn-outline-primary btn-sm w-100">
+                        View All Notifications <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Trends - Competitor Monitor{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1><i class="bi bi-graph-up"></i> Trends & Patterns</h1>
+            {% if user.is_authenticated %}
+            <a href="?analyze=true" class="btn btn-primary">
+                <i class="bi bi-arrow-clockwise"></i> Analyze Trends
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% if trends %}
+    {% for trend in trends %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ trend.name }}</h5>
+                <p class="text-muted small mb-3">{{ trend.description }}</p>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <small class="text-muted d-block">Frequency</small>
+                        <strong>{{ trend.frequency }}</strong>
+                    </div>
+                    <div>
+                        <small class="text-muted d-block">Confidence</small>
+                        <strong>{{ trend.confidence_score|floatformat:0 }}%</strong>
+                    </div>
+                    <div>
+                        <small class="text-muted d-block">Type</small>
+                        <span class="badge bg-info">{{ trend.trend_type }}</span>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <small class="text-muted">
+                        <i class="bi bi-calendar"></i> First detected: {{ trend.first_detected|date:"M d, Y" }}
+                    </small>
+                </div>
+                <div>
+                    <small class="text-muted">
+                        <i class="bi bi-clock"></i> Last detected: {{ trend.last_detected|timesince }} ago
+                    </small>
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <a href="{% url 'updates' %}?type={{ trend.trend_type }}" class="btn btn-sm btn-outline-primary">
+                    View Related Updates <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-graph-up" style="font-size: 4rem; color: #ccc;"></i>
+                <h4 class="mt-3 text-muted">No Trends Detected</h4>
+                <p class="text-muted">Run trend analysis to detect patterns in competitor updates.</p>
+                {% if user.is_authenticated %}
+                <a href="?analyze=true" class="btn btn-primary">
+                    <i class="bi bi-arrow-clockwise"></i> Analyze Trends Now
+                </a>
+                {% else %}
+                <p class="text-muted small">Please log in to run trend analysis.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+

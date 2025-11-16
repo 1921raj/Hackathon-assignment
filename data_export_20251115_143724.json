@@ -1,0 +1,204 @@
+{
+  "exported_at": "2025-11-15T14:37:24.102729",
+  "dashboard_stats": {
+    "total_competitors": 5,
+    "total_updates": 6,
+    "high_impact_count": 4,
+    "recent_week_updates": 6,
+    "updates_by_type": {
+      "campaign": 1,
+      "feature": 1,
+      "news": 1,
+      "partnership": 1,
+      "pricing": 1,
+      "release": 1
+    }
+  },
+  "competitors": [
+    {
+      "id": 1,
+      "name": "kjndsfsd",
+      "website": "https://www.instagram.com/",
+      "description": "jhbkk",
+      "industry": "kkjn",
+      "is_active": true,
+      "created_at": "2025-11-15T08:45:26.041059+00:00",
+      "update_count": 0
+    },
+    {
+      "id": 2,
+      "name": "kjndsfsd",
+      "website": "https://www.youtube.com/",
+      "description": "fashion",
+      "industry": "video",
+      "is_active": true,
+      "created_at": "2025-11-15T08:47:02.967359+00:00",
+      "update_count": 0
+    },
+    {
+      "id": 3,
+      "name": "TechCorp Inc",
+      "website": "https://techcorp.example.com",
+      "description": "Leading technology solutions provider",
+      "industry": "Technology",
+      "is_active": true,
+      "created_at": "2025-11-15T09:06:31.450229+00:00",
+      "update_count": 2
+    },
+    {
+      "id": 4,
+      "name": "CloudServices Ltd",
+      "website": "https://cloudservices.example.com",
+      "description": "Cloud infrastructure and services",
+      "industry": "Cloud Computing",
+      "is_active": true,
+      "created_at": "2025-11-15T09:06:31.466196+00:00",
+      "update_count": 2
+    },
+    {
+      "id": 5,
+      "name": "DataAnalytics Pro",
+      "website": "https://dataanalytics.example.com",
+      "description": "Advanced data analytics platform",
+      "industry": "Data Analytics",
+      "is_active": true,
+      "created_at": "2025-11-15T09:06:31.479922+00:00",
+      "update_count": 2
+    }
+  ],
+  "updates": [
+    {
+      "id": 6,
+      "competitor_id": 5,
+      "competitor_name": "DataAnalytics Pro",
+      "title": "Company News: Expansion Plans",
+      "content": "DataAnalytics Pro announced plans to expand operations to three new regions.",
+      "url": "https://dataanalytics.example.com/news",
+      "update_type": "news",
+      "update_type_display": "News/Announcement",
+      "detected_at": "2025-11-15T09:06:31.531513+00:00",
+      "published_date": null,
+      "impact_score": 50,
+      "is_high_impact": false,
+      "source": "website"
+    },
+    {
+      "id": 5,
+      "competitor_id": 5,
+      "competitor_name": "DataAnalytics Pro",
+      "title": "New Feature: Real-time Analytics",
+      "content": "DataAnalytics Pro has added real-time analytics dashboard to their platform.",
+      "url": "https://dataanalytics.example.com/features",
+      "update_type": "feature",
+      "update_type_display": "Feature Update",
+      "detected_at": "2025-11-15T09:06:31.524972+00:00",
+      "published_date": null,
+      "impact_score": 60,
+      "is_high_impact": false,
+      "source": "website"
+    },
+    {
+      "id": 4,
+      "competitor_id": 4,
+      "competitor_name": "CloudServices Ltd",
+      "title": "Partnership with Major Provider",
+      "content": "CloudServices Ltd announced a strategic partnership with a major cloud infrastructure provider.",
+      "url": "https://cloudservices.example.com/partnership",
+      "update_type": "partnership",
+      "update_type_display": "Partnership",
+      "detected_at": "2025-11-15T09:06:31.515622+00:00",
+      "published_date": null,
+      "impact_score": 75,
+      "is_high_impact": true,
+      "source": "website"
+    },
+    {
+      "id": 3,
+      "competitor_id": 4,
+      "competitor_name": "CloudServices Ltd",
+      "title": "Summer Campaign: 50% Off",
+      "content": "CloudServices Ltd is running a summer promotion with 50% discount on all cloud storage plans.",
+      "url": "https://cloudservices.example.com/campaign",
+      "update_type": "campaign",
+      "update_type_display": "Marketing Campaign",
+      "detected_at": "2025-11-15T09:06:31.508645+00:00",
+      "published_date": null,
+      "impact_score": 70,
+      "is_high_impact": true,
+      "source": "website"
+    },
+    {
+      "id": 2,
+      "competitor_id": 3,
+      "competitor_name": "TechCorp Inc",
+      "title": "Product Release: Version 3.0",
+      "content": "TechCorp Inc has released version 3.0 of their flagship product with new AI-powered features.",
+      "url": "https://techcorp.example.com/release",
+      "update_type": "release",
+      "update_type_display": "Product Release",
+      "detected_at": "2025-11-15T09:06:31.499692+00:00",
+      "published_date": null,
+      "impact_score": 90,
+      "is_high_impact": true,
+      "source": "website"
+    },
+    {
+      "id": 1,
+      "competitor_id": 3,
+      "competitor_name": "TechCorp Inc",
+      "title": "New Pricing Model Launched",
+      "content": "TechCorp Inc has announced a new subscription-based pricing model with significant discounts for annual plans.",
+      "url": "https://techcorp.example.com/pricing",
+      "update_type": "pricing",
+      "update_type_display": "Pricing Change",
+      "detected_at": "2025-11-15T09:06:31.493218+00:00",
+      "published_date": null,
+      "impact_score": 85,
+      "is_high_impact": true,
+      "source": "website"
+    }
+  ],
+  "trends": [],
+  "notifications": [
+    {
+      "id": 4,
+      "user": "testuser",
+      "update_id": 4,
+      "update_title": "Partnership with Major Provider",
+      "competitor_name": "CloudServices Ltd",
+      "message": "High-impact update from CloudServices Ltd: Partnership with Major Provider",
+      "is_read": false,
+      "created_at": "2025-11-15T09:06:31.562419+00:00"
+    },
+    {
+      "id": 3,
+      "user": "testuser",
+      "update_id": 3,
+      "update_title": "Summer Campaign: 50% Off",
+      "competitor_name": "CloudServices Ltd",
+      "message": "High-impact update from CloudServices Ltd: Summer Campaign: 50% Off",
+      "is_read": false,
+      "created_at": "2025-11-15T09:06:31.556463+00:00"
+    },
+    {
+      "id": 2,
+      "user": "testuser",
+      "update_id": 2,
+      "update_title": "Product Release: Version 3.0",
+      "competitor_name": "TechCorp Inc",
+      "message": "High-impact update from TechCorp Inc: Product Release: Version 3.0",
+      "is_read": false,
+      "created_at": "2025-11-15T09:06:31.546995+00:00"
+    },
+    {
+      "id": 1,
+      "user": "testuser",
+      "update_id": 1,
+      "update_title": "New Pricing Model Launched",
+      "competitor_name": "TechCorp Inc",
+      "message": "High-impact update from TechCorp Inc: New Pricing Model Launched",
+      "is_read": false,
+      "created_at": "2025-11-15T09:06:31.540666+00:00"
+    }
+  ]
+}
